@@ -1,0 +1,725 @@
+% ============================================================
+% main_v4_additions.tex
+% Copy-ready additions for main_v3.tex
+%
+% This file is not intended to compile by itself.
+% Copy each marked block into the indicated location in main_v3.tex.
+% ============================================================
+
+
+% ============================================================
+% BLOCK A
+% INSERT AT THE END OF:
+% \subsection{Overview of the transformation}
+% ============================================================
+
+\paragraph{Two nonredundant congestion branches.}
+The demand--capacity ratio does not determine emissions through queue speed
+alone. Instead, it generates two distinct traffic-state branches:
+\begin{equation}
+\label{eq:two_branch_state}
+z=\frac{D}{C}
+\quad\longrightarrow\quad
+\begin{cases}
+P(z),\,w_{t_2}(z),\,\bar w(z),
+& \text{delay and exposure branch},\\[1mm]
+\mu(z)\longrightarrow v_q(z)\longrightarrow\Gamma(z),
+& \text{physical state and emission-severity branch}.
+\end{cases}
+\end{equation}
+The first branch determines how much excess-time exposure vehicles experience.
+The second determines the emission consequence per unit of that exposure.
+The two branches meet in
+\begin{equation}
+\label{eq:two_branch_emission_summary}
+e(z)
+=
+r(v_{\mathrm{ref}})T_c
++
+\Gamma(z)\bar w(z),
+\qquad
+\Gamma(z)
+\equiv
+\Gamma\!\left(v_q(z)\right).
+\end{equation}
+Thus, the proposed model is neither a delay-only model nor a speed-only model.
+It is a joint exposure--severity model.
+
+
+% ============================================================
+% BLOCK B
+% REPLACE THE CURRENT PIPELINE FIGURE OR INSERT AFTER IT.
+% This is a compile-safe placeholder for the revised Figure 1.
+% ============================================================
+
+\begin{figure}[t]
+\centering
+\fbox{%
+\begin{minipage}{0.94\textwidth}
+\centering
+\vspace{3mm}
+\textbf{PLACEHOLDER FOR REVISED FIGURE 1}
+
+\vspace{3mm}
+\[
+z=\frac{D}{C}
+\]
+
+\[
+\begin{array}{ccccc}
+& \nearrow &
+P(z),\,w_{t_2}(z),\,\bar w(z)
+& \quad &
+\text{delay/exposure branch}
+\\[2mm]
+z
+&&&&
+\\[-1mm]
+& \searrow &
+\mu(z)\rightarrow v_q(z)\rightarrow\Gamma(z)
+&&
+\text{physical/emission-severity branch}
+\end{array}
+\]
+
+\[
+\left[\bar w(z),\Gamma(z)\right]
+\longrightarrow
+e(z)
+=
+r(v_{\mathrm{ref}})T_c+\Gamma(z)\bar w(z).
+\]
+
+\[
+\left[w(\tau;z),v_q(z)\right]
+\longrightarrow
+t_Q(\tau;z)
+\longrightarrow
+EC_1(\tau;z).
+\]
+
+\vspace{3mm}
+\end{minipage}
+}
+\caption{Two-branch structure of the proposed queue-emission transformation.
+The delay branch determines the quantity of congestion exposure, whereas the
+discharge--FD branch determines the emission consequence per unit of exposure.
+For a fixed episode conditioned on $z$, $\mu(z)$, $v_q(z)$, and $\Gamma(z)$
+are constant, while $w(\tau;z)$ varies among vehicles.}
+\label{fig:two_branch_placeholder}
+\end{figure}
+
+
+% ============================================================
+% BLOCK C
+% INSERT AT THE BEGINNING OF:
+% \section{Two-regime queue traversal and emission foundation}
+% BEFORE:
+% \subsection{Lawson's distinction between delay and time in queue}
+% ============================================================
+
+\subsection{Classical fixed-bottleneck benchmark}
+\label{subsec:fixed_bottleneck}
+
+The proposed construction is first interpreted relative to a classical
+fixed bottleneck. Let $\mu_0$ denote the constant discharge rate of an active
+bottleneck, and let $\lambda(\tau)$ denote the arrival rate to the queue.
+While the queue exists, its accumulation satisfies
+\begin{equation}
+\label{eq:fixed_bottleneck_accumulation}
+\dot q(\tau)=\lambda(\tau)-\mu_0.
+\end{equation}
+For the elementary two-rate representation,
+\begin{equation}
+\label{eq:two_arrival_rates}
+\lambda(\tau)=
+\begin{cases}
+\lambda_H>\mu_0, & t_0\leq\tau<t_2,\\[1mm]
+\lambda_L<\mu_0, & t_2<\tau\leq t_3.
+\end{cases}
+\end{equation}
+The high-arrival branch accumulates the queue, whereas the low-arrival branch
+dissipates it. For a vertical point queue, the virtual waiting time is
+$w(\tau)=q(\tau)/\mu_0$, so
+\begin{equation}
+\label{eq:waiting_slopes_fixed_bottleneck}
+\frac{dw(\tau)}{d\tau}
+=
+\begin{cases}
+(\lambda_H-\mu_0)/\mu_0>0,
+& t_0\leq\tau<t_2,\\[2mm]
+(\lambda_L-\mu_0)/\mu_0<0,
+& t_2<\tau\leq t_3.
+\end{cases}
+\end{equation}
+
+This benchmark separates the temporal demand-side mechanism from the
+bottleneck supply state. The two arrival-rate branches determine how waiting
+time accumulates and dissipates, while the bottleneck discharge $\mu_0$
+remains fixed. Consequently, an FD-equivalent congested vehicle speed
+reconstructed from $\mu_0$ is also fixed within the representative episode.
+
+\paragraph{Reduced-form schedule-early and schedule-late interpretation.}
+The present paper does not observe or optimize a complete set of link-level
+departure times. It therefore does not claim to reconstruct a full endogenous
+Vickrey departure-time equilibrium. Nevertheless, the aggregate queue episode
+admits a corner-point scheduling interpretation.
+
+Let $A$ denote the unit disutility of waiting time, $B$ the unit schedule-early
+penalty, and $C_s$ the unit schedule-late penalty. The generalized scheduling
+disutility is
+\begin{equation}
+\label{eq:ABC_schedule_cost}
+U(\tau)
+=
+A w(\tau)
++
+B S_E(\tau)
++
+C_s S_L(\tau).
+\end{equation}
+Under the symmetric reduced-form case used by the PAQ profile,
+\begin{equation}
+t_2-t_0=t_3-t_2=\frac{P}{2},
+\qquad
+B=C_s.
+\end{equation}
+The two zero-wait endpoints and the maximum-waiting point then admit the
+corner-point consistency condition
+\begin{equation}
+\label{eq:corner_point_consistency}
+B\frac{P}{2}
+=
+A w_{t_2}
+=
+C_s\frac{P}{2}.
+\end{equation}
+The beginning-of-episode traveler experiences no queueing but incurs
+schedule-early displacement; the traveler associated with $t_2$ experiences
+the maximum waiting time but no schedule displacement; and the
+end-of-episode traveler experiences no queueing but incurs schedule-late
+displacement.
+
+Equation~\eqref{eq:corner_point_consistency} is used only as a reduced-form
+behavioral interpretation of the observed congestion duration and maximum
+waiting time. Establishing equal generalized cost at every used departure
+time would require a full dynamic departure-time model, which is outside the
+scope of the present paper.
+
+\paragraph{Behavioral interpretation of the PAQ scaling relation.}
+Using
+\begin{equation}
+w_{t_2}(z)=T_c f_p[P(z)]^s,
+\end{equation}
+the symmetric corner-point relation implies
+\begin{equation}
+\label{eq:ABC_qvdf_interpretation}
+\frac{B}{A}
+=
+\frac{C_s}{A}
+=
+\frac{2w_{t_2}(z)}{P(z)}
+=
+2T_c f_p[P(z)]^{s-1}.
+\end{equation}
+When $s=1$, the implied waiting-versus-schedule trade-off is constant across
+episodes. When $s\neq1$, $f_p$ and $s$ should be interpreted as reduced-form
+queue-shape parameters rather than fixed traveler-preference coefficients.
+They may jointly reflect scheduling behavior, heterogeneity, temporal
+aggregation, and facility-specific operating conditions.
+
+
+% ============================================================
+% BLOCK D
+% OPTIONAL FIGURE PLACEHOLDER.
+% INSERT AFTER BLOCK C OR AFTER THE EXISTING VEHICLE TRAJECTORY FIGURE.
+% ============================================================
+
+\begin{figure}[t]
+\centering
+\fbox{%
+\begin{minipage}{0.94\textwidth}
+\centering
+\vspace{3mm}
+\textbf{PLACEHOLDER FOR CLASSICAL BOTTLENECK FIGURE}
+
+\vspace{2mm}
+\textbf{Panel A:} cumulative arrivals and departures, with
+$\lambda_H>\mu_0$ during accumulation,
+$\lambda_L<\mu_0$ during dissipation, and constant departure slope $\mu_0$.
+
+\vspace{2mm}
+\textbf{Panel B:} waiting/schedule trade-off:
+\[
+w(t_0)=0,\qquad
+w(t_2)=w_{t_2},\qquad
+w(t_3)=0,
+\]
+and
+\[
+B\frac{P}{2}=Aw_{t_2}=C_s\frac{P}{2}.
+\]
+
+\vspace{2mm}
+\textbf{Panel C:} incremental individual emission:
+\[
+\Delta e(\tau)=\Gamma_0 w(\tau),
+\]
+shown as a vertical rescaling of the waiting-time profile.
+
+\vspace{3mm}
+\end{minipage}
+}
+\caption{Classical fixed-bottleneck benchmark and its emission augmentation.
+The arrival rate changes across the accumulation and dissipation branches,
+whereas the bottleneck discharge, FD-equivalent queued vehicle speed, and
+delay-to-emission factor remain constant within the episode.}
+\label{fig:fixed_bottleneck_placeholder}
+\end{figure}
+
+
+% ============================================================
+% BLOCK E
+% INSERT IMMEDIATELY AFTER EQUATION:
+% \eqref{eq:single_vehicle_emission}
+% ============================================================
+
+\paragraph{Interpretation of the delay-to-emission factor.}
+The factor $\Gamma$ is a per-vehicle, per-unit-delay emission conversion
+coefficient. It is not a queue-accumulation variable and is not intrinsically
+time dependent. For a fixed bottleneck discharge $\mu_0$, define
+\begin{equation}
+\label{eq:fixed_mu_vq_gamma}
+v_{q,0}
+=
+V_{\mathrm{FD}}^{\mathrm{cong}}(\mu_0),
+\qquad
+\Gamma_0
+=
+\Gamma(v_{q,0}).
+\end{equation}
+Because $\mu_0$ is constant within the episode, $v_{q,0}$ and $\Gamma_0$ are
+also constant. The temporal variation in individual congestion emissions is
+generated by the vehicle-specific delay:
+\begin{equation}
+\label{eq:fixed_bottleneck_vehicle_emission}
+EC_1(\tau)
+=
+r(v_{\mathrm{ref}})T_c
++
+\Gamma_0 w(\tau).
+\end{equation}
+Hence, under the classical fixed-discharge benchmark, the incremental
+emission profile is an exact vertical rescaling of the waiting-time profile:
+\begin{equation}
+\label{eq:fixed_bottleneck_incremental_emission}
+\Delta e(\tau)
+\equiv
+EC_1(\tau)-r(v_{\mathrm{ref}})T_c
+=
+\Gamma_0 w(\tau).
+\end{equation}
+
+In the QVDF generalization, $\Gamma$ becomes a function of the congestion
+index only when different representative episodes are compared:
+\begin{equation}
+\label{eq:gamma_as_z_function}
+\Gamma(z)
+=
+\Gamma\!\left(
+V_{\mathrm{FD}}^{\mathrm{cong}}[\mu(z)]
+\right).
+\end{equation}
+Within any one episode conditioned on $z$, $\mu(z)$, $v_q(z)$, and
+$\Gamma(z)$ remain constant under the analytical reconstruction, while
+$w(\tau;z)$ varies among vehicle entry times. Thus, $\Gamma(z)$ controls
+emission severity per unit of delay, whereas $w(\tau;z)$ controls the
+amount of vehicle-specific exposure.
+
+
+% ============================================================
+% BLOCK F
+% INSERT IN SECTION:
+% "From individual traversals to a congested episode"
+% AFTER THE DEFINITION OF ARRIVAL-WEIGHTED MEAN DELAY.
+% ============================================================
+
+\paragraph{Cumulative-curve interpretation under fixed discharge.}
+For the classical fixed-discharge benchmark, $\Gamma_0$ is constant and may
+be taken outside the episode integral. Consequently, the incremental
+bottleneck emission is
+\begin{equation}
+\label{eq:fixed_bottleneck_aggregate_emission}
+EC_{\mathrm{inc}}
+=
+\Gamma_0
+\int_{\mathcal T}
+a(\tau)w(\tau)\,d\tau
+=
+\Gamma_0 D\bar w.
+\end{equation}
+The integral in Equation~\eqref{eq:fixed_bottleneck_aggregate_emission} is the
+total vehicle excess travel time represented by the area between the virtual
+arrival and departure curves in the cumulative input--output diagram.
+Therefore, the proposed physicalization does not replace the classical
+cumulative curves; it assigns an environmental consequence to their
+vehicle-time area.
+
+
+% ============================================================
+% BLOCK G
+% INSERT AT THE BEGINNING OF:
+% \section{Traffic-state reconstruction from the FD--QVDF}
+% AFTER THE OPENING PARAGRAPH.
+% ============================================================
+
+\subsection{Nested interpretation of the discharge model}
+\label{subsec:nested_discharge}
+
+The classical benchmark treats the bottleneck discharge $\mu_0$ as constant
+within and across representative congestion episodes. The QVDF extension
+retains constancy within each episode but permits the episode-equivalent
+discharge to vary across episodes indexed by $z$. Accordingly,
+$\mu(z)$ should not be interpreted as an instantaneously varying service rate
+inside one queue. Rather, it is the constant effective discharge assigned to
+a representative episode with congestion level $z$.
+
+This interpretation produces three nested cases:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \textbf{Classical fixed bottleneck:}
+$\mu=\mu_0$, so $v_q=v_{q,0}$ and $\Gamma=\Gamma_0$.
+\item \textbf{Episode-specific bottleneck:}
+each episode $j$ has a constant $\mu_j$, $v_{q,j}$, and $\Gamma_j$, but those
+values may differ across episodes.
+\item \textbf{QVDF-indexed bottleneck:}
+the episode-specific values are represented by
+$\mu_j\approx\mu(z_j)$, giving
+$v_q(z)=V_{\mathrm{FD}}^{\mathrm{cong}}[\mu(z)]$ and
+$\Gamma(z)=\Gamma(v_q(z))$.
+\end{enumerate}
+The first case is the benchmark, the second is the empirical intermediate
+representation, and the third is the planning-scale closure developed in
+this paper.
+
+
+% ============================================================
+% BLOCK H
+% INSERT AFTER EQUATION:
+% \eqref{eq:qvdf_duration_discharge}
+% ============================================================
+
+\paragraph{Within-episode constancy versus cross-episode variation.}
+Equation~\eqref{eq:qvdf_duration_discharge} indexes an
+episode-equivalent discharge by the aggregate congestion state. It does not
+imply that the discharge changes continuously with time during a single
+episode. Conditional on a given $z$, the analytical reconstruction assumes
+\begin{equation}
+\mu(\tau\mid z)=\mu(z),
+\qquad
+t_0\leq\tau\leq t_3.
+\end{equation}
+The temporal queue profile within that episode is generated by the difference
+between the time-dependent arrival rate and the fixed episode discharge.
+Across representative episodes, however,
+\begin{equation}
+z_i\neq z_j
+\quad\Longrightarrow\quad
+\mu(z_i)\ \text{may differ from}\ \mu(z_j).
+\end{equation}
+Thus, the proposed $\mu(z)$ relation is a cross-episode QVDF hypothesis,
+with the classical constant-discharge model nested as a special case.
+
+
+% ============================================================
+% BLOCK I
+% INSERT AFTER EQUATION:
+% \eqref{eq:vq_fd_qvdf}
+% ============================================================
+
+\paragraph{Meaning of the reconstructed speed.}
+The quantity $v_q(z)$ is an episode-equivalent vehicle operating speed on the
+congested branch of the fundamental diagram. It is not the propagation speed
+of the upstream or downstream queue boundary, a kinematic shockwave speed,
+the speed of a moving bottleneck, or the speed at which the spatial queue
+length changes. The model does not reconstruct the full spatial evolution of
+the queue. Instead, it supplies the within-queue vehicle speed needed to
+evaluate the queued-regime emission rate in the two-regime trajectory model.
+
+
+% ============================================================
+% BLOCK J
+% REPLACE OR EXPAND THE PARAGRAPH DISCUSSING n=1 AND n>1
+% IN "Admissibility of the discharge--speed chain".
+% ============================================================
+
+The boundary case $n=1$ yields
+\begin{equation}
+\mu(z)=\frac{C}{f_d},
+\end{equation}
+which is constant across representative congestion episodes. It therefore
+recovers the classical fixed-discharge benchmark, subject to the adopted
+normalization. When $n>1$, the model permits the episode-equivalent discharge
+to decline across episodes as the aggregate oversaturation index increases.
+This is a cross-episode generalization, not a claim that the bottleneck
+service rate necessarily declines continuously during one congestion episode.
+A calibration with $n<1$ would imply that the reconstructed episode discharge
+increases with congestion and is therefore excluded from the physical
+discharge--speed interpretation used here.
+
+
+% ============================================================
+% BLOCK K
+% INSERT IN:
+% \section{Assignment compatibility}
+% BEFORE:
+% \subsection{Generalized link cost}
+% ============================================================
+
+\subsection{Three distinct uses of the emission function}
+\label{subsec:three_uses}
+
+The same queue-emission function supports three conceptually distinct uses.
+
+\paragraph{Ex-post environmental accounting.}
+The observed or assigned traffic pattern is held fixed, and total emissions
+are evaluated using
+\begin{equation}
+EC(z)=D e(z).
+\end{equation}
+In this use, emissions do not affect route or departure-time choices.
+
+\paragraph{Emission-weighted static assignment.}
+Per-vehicle emissions enter a separable link cost together with travel time.
+This is the assignment use developed in the present section.
+
+\paragraph{Departure-time DTA extension.}
+A future dynamic model could augment the scheduling disutility by an
+emission term:
+\begin{equation}
+\label{eq:emission_augmented_departure_cost}
+U_e(\tau;z)
+=
+A w(\tau;z)
++
+B S_E(\tau)
++
+C_s S_L(\tau)
++
+\eta_e\Gamma(z)w(\tau;z).
+\end{equation}
+For a fixed episode conditioned on $z$, this becomes
+\begin{equation}
+\label{eq:effective_waiting_coefficient}
+U_e(\tau;z)
+=
+A_{\mathrm{eff}}(z)w(\tau;z)
++
+B S_E(\tau)
++
+C_s S_L(\tau),
+\qquad
+A_{\mathrm{eff}}(z)
+=
+A+\eta_e\Gamma(z).
+\end{equation}
+Thus, under a fixed episode state, emissions modify the effective coefficient
+on waiting time rather than introducing a new temporal shape. The present
+paper does not solve the endogenous departure-time equilibrium implied by
+Equation~\eqref{eq:emission_augmented_departure_cost}; it supplies the
+traffic-state and emission terms required by such an extension.
+
+
+% ============================================================
+% BLOCK L
+% REPLACE THE CURRENT:
+% \subsection{Monotonicity condition}
+% WITH THIS EXPANDED VERSION.
+% ============================================================
+
+\subsection{Monotonicity and convex assignment potential}
+
+Define
+\begin{equation}
+\Gamma_z(z)
+\equiv
+\Gamma(v_q(z)).
+\end{equation}
+Using
+\begin{equation}
+e(z)
+=
+r(v_{\mathrm{ref}})T_c
++
+\Gamma_z(z)\bar w(z),
+\end{equation}
+the derivative of the complete generalized link cost is
+\begin{equation}
+\label{eq:exact_generalized_cost_derivative}
+g'(z)
+=
+\left[
+\theta_t+\theta_e\Gamma_z(z)
+\right]\bar w'(z)
++
+\theta_e\Gamma_z'(z)\bar w(z).
+\end{equation}
+The exact assignment condition is therefore
+\begin{equation}
+\label{eq:exact_monotonicity}
+g'(z)\geq0
+\qquad
+\text{on the calibrated assignment domain}.
+\end{equation}
+The factor $\Gamma_z(z)$ need not itself be linear or convex. What matters
+for a convex separable assignment formulation is monotonicity of the complete
+generalized link cost.
+
+Under the admissible discharge--speed chain,
+$v_q'(z)\leq0$, and
+\begin{equation}
+\Gamma_z'(z)
+=
+\Gamma'(v_q(z))v_q'(z).
+\end{equation}
+A convenient sufficient condition for the emission component to be
+nondecreasing is
+\begin{equation}
+\label{eq:gamma_sufficient_condition_v4}
+\Gamma(v_q)\geq0,
+\qquad
+\Gamma'(v_q)\leq0
+\end{equation}
+for all queued speeds in the assignment domain. This condition is sufficient
+but not necessary: the positive travel-time term in
+Equation~\eqref{eq:exact_generalized_cost_derivative} may preserve
+$g'(z)\geq0$ even when the emission component alone is not monotone.
+
+Let $x$ denote link demand and let $K$ denote the corresponding period
+capacity, so that
+\begin{equation}
+z=\frac{x}{K}.
+\end{equation}
+If $g(z)$ is continuous and nondecreasing, the link contribution to the
+Beckmann potential is
+\begin{equation}
+\label{eq:flow_space_beckmann}
+\Phi(x)
+=
+\int_0^x
+g\!\left(\frac{u}{K}\right)\,du
+=
+K\int_0^{x/K}g(s)\,ds.
+\end{equation}
+Where derivatives exist,
+\begin{equation}
+\label{eq:beckmann_convexity_proof}
+\Phi''(x)
+=
+\frac{1}{K}
+g'\!\left(\frac{x}{K}\right)
+\geq0.
+\end{equation}
+Hence, convexity of the Beckmann potential follows from monotonicity of the
+complete generalized cost. It does not require $\Gamma(z)$ itself to be
+convex.
+
+
+% ============================================================
+% BLOCK M
+% INSERT BEFORE THE CURRENT POLYNOMIAL PRIMITIVE EQUATION.
+% ============================================================
+
+An integral with respect to $z$ is a normalized primitive rather than the
+full flow-space link potential. Using $x=Kz$, the corresponding Beckmann
+contribution is
+\begin{equation}
+\label{eq:normalized_to_flow_primitive}
+\int_{x_a}^{x_b}g\!\left(\frac{u}{K}\right)\,du
+=
+K\int_{z_a}^{z_b}g(z)\,dz.
+\end{equation}
+If
+\begin{equation}
+\Gamma_z(z)
+\approx
+F(z)
+=
+\sum_k a_k z^k,
+\end{equation}
+then the normalized congestion-emission primitive remains
+\begin{equation}
+\int_{z_a}^{z_b}
+F(z)\bar w(z)\,dz
+=
+T_c\alpha
+\sum_k
+\frac{a_k}{k+\beta+1}
+\left[
+z^{k+\beta+1}
+\right]_{z_a}^{z_b},
+\end{equation}
+and the corresponding flow-space contribution is obtained by multiplying
+this expression by $K$.
+
+
+% ============================================================
+% BLOCK N
+% OPTIONAL FIGURE PLACEHOLDER FOR FUTURE ATLANTA VALIDATION.
+% INSERT IN THE NUMERICAL SECTION WHERE APPROPRIATE.
+% ============================================================
+
+\begin{figure}[t]
+\centering
+\fbox{%
+\begin{minipage}{0.94\textwidth}
+\centering
+\vspace{3mm}
+\textbf{PLACEHOLDER FOR EXTERNAL DISCHARGE VALIDATION}
+
+\vspace{2mm}
+Suggested contents:
+\begin{enumerate}[leftmargin=2em]
+\item Observed episode discharge $\mu_j$ against $z_j=D_j/C_j$ for the
+Atlanta corridor.
+\item Facility-specific constant-$\mu$ benchmark.
+\item Fitted QVDF-indexed curve $\mu(z)$ with uncertainty band.
+\item Observed congested vehicle speed compared with
+$V_{\mathrm{FD}}^{\mathrm{cong}}[\mu(z)]$.
+\item Out-of-sample comparison of fixed-$\mu$, episode-specific, and
+QVDF-indexed emission estimates.
+\end{enumerate}
+\vspace{3mm}
+\end{minipage}
+}
+\caption{Placeholder for independent validation of the QVDF-indexed
+episode-equivalent discharge relation using the Atlanta corridor dataset.}
+\label{fig:atlanta_validation_placeholder}
+\end{figure}
+
+
+% ============================================================
+% BLOCK O
+% INSERT IN THE CONCLUSION BEFORE:
+% \paragraph{Limitations and scope.}
+% ============================================================
+
+The classical fixed bottleneck is nested in the proposed framework. With
+constant discharge $\mu_0$, the FD-equivalent congested vehicle speed and
+delay-to-emission factor are constant, and the incremental emission of a
+vehicle is exactly proportional to its waiting time:
+\begin{equation}
+\Delta e(\tau)=\Gamma_0w(\tau).
+\end{equation}
+The QVDF extension retains this within-episode constancy but permits the
+episode-equivalent discharge, congested vehicle speed, and emission severity
+per unit delay to differ across representative congestion levels. Hence,
+$D/C$ affects emissions through two separate channels: a delay-exposure
+channel and a physical-state channel. This distinction is the central
+theoretical contribution of the paper.
+
+The present formulation should be interpreted as a reduced-form bridge from
+period-aggregate assignment variables to bottleneck-consistent queue
+emissions. It does not reconstruct a complete endogenous departure-time
+equilibrium, queue-boundary propagation, moving bottlenecks, or the full
+spatial heterogeneity of a long physical queue. Those extensions require a
+dynamic traffic assignment or kinematic-wave formulation.
